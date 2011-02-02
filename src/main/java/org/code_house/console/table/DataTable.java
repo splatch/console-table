@@ -59,18 +59,7 @@ public class DataTable extends TableElement {
         }
     }
 
-    public void beign() {
-//        if (rows.isEmpty()) {
-//            return;
-//        }
-//
-//        append("\n");
-//        printRows();
-//
-//        rows.clear();
-    }
-
-    public void end() {
+    public void flush() {
         printRows();
         rows.clear();
     }
@@ -79,28 +68,26 @@ public class DataTable extends TableElement {
         for (Row row : rows) {
             List<Cell> cells = row.getCells();
 
-            int colSpanCount = 0;
-            for (int i = 0, size = cells.size(); i < size; i++) {
+            for (int i = 0, colIndex = 0, size = cells.size(); i < size; i++) {
                 Cell cell = cells.get(i);
                 int colSpan = cell.getColSpan();
 
-                Column column = columns.get(colSpanCount + i);
-                int colSize = column.getSize();
-
-                if (colSpan > 0) {
-                    for (int j = 0; j < colSpan; j++) {
-                        colSize += columns.get(i + j).getSize();
-                    }
-                    if (colSpanCount > 0) {
-                        colSize += 3;
-                    }
-                    colSpanCount += colSpan;
-                    colSize += 2 * colSpanCount;
-                    colSize += 2;
-                }
+                Column column = columns.get(colIndex);
+                int colSize = 0;
 
                 boolean first = i == 0;
                 boolean last = i + 1 == size;
+
+                if (colSpan > 1) {
+                    for (int j = 0; j < colSpan; j++) {
+                        colSize += columns.get(colIndex + j).getSize();
+                    }
+                    colSize += colSpan;
+                    colIndex += colSpan;
+                } else {
+                    colSize = column.getSize();
+                    colIndex++;
+                }
 
                 Style style = calculateStyle(column, row, cell);
 
@@ -122,11 +109,18 @@ public class DataTable extends TableElement {
                     }
                 } 
 
-                append(style.apply(column.getAlign().position(value, colSize)));
+                append(style.apply(calculateAlign(column, cell).position(value, colSize)));
 
             }
             append("\n");
         }
+    }
+
+    private HAlign calculateAlign(Column column, Cell cell) {
+        if (cell.getAlign() != null) {
+            return cell.getAlign();
+        }
+        return column.getAlign();
     }
 
     private Style calculateStyle(Column column, Row row, Cell cell) {

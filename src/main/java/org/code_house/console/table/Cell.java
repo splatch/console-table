@@ -24,14 +24,24 @@ public class Cell extends TableElement {
 
     private String value;
     private int colSpan;
+    private HAlign align;
 
     public Cell(Object value) {
         this(value, 0);
     }
 
+    public Cell(Object value, HAlign align) {
+        this(value, align, 0);
+    }
+
     public Cell(Object value, int colSpan) {
+        this(value, null, colSpan);
+    }
+
+    public Cell(Object value, HAlign align, int colSpan) {
         this.value = value.toString();
         this.colSpan = colSpan;
+        this.align = align;
     }
 
     public String getValue() {
@@ -44,6 +54,14 @@ public class Cell extends TableElement {
 
     public int getColSpan() {
         return colSpan;
+    }
+
+    public HAlign getAlign() {
+        return align;
+    }
+
+    public void setAlign(HAlign align) {
+        this.align = align;
     }
 
     @Override

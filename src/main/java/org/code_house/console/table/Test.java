@@ -72,8 +72,6 @@ public class Test {
 //        table.addColumn(new Column("Level", 5/*, Align.right*/));
 //        table.addColumn(new Column("Name"));
 
-        table.beign();
-
         // load sample data
         BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream("data.txt")));
         String line;
@@ -84,7 +82,7 @@ public class Test {
 
         Row row = new Row(false);
         Cell cell = new Cell("");
-        cell.setColSpan(3);
+        cell.setColSpan(4);
         row.addCell(cell);
         Cell cell2 = new Cell("Fragments: 10, 11, 12");
         row.addCell(cell2);
@@ -94,12 +92,12 @@ public class Test {
 
         row = new Row(false);
         cell = new Cell("");
-        cell.setColSpan(3);
+        cell.setColSpan(4);
         row.addCell(cell);
         row.addCell(new Cell("Hosts: 10, 20, 30"));
         table.addRow(row);
 
-        table.end();
+        table.flush();
 
     }
 

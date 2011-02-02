@@ -17,9 +17,9 @@ public class TestX {
         table.addColumn(new Column(true));
 
         Row row = new Row();
-        row.addCell(new Cell("OSGi", 1));
-        row.addCell(new Cell("Extender", 1));
-        row.addCell(new Cell("Misc", 1));
+        row.addCell(new Cell("OSGi", HAlign.center, 2));
+        row.addCell(new Cell("Extender", HAlign.center, 2));
+        row.addCell(new Cell("Misc", 2));
         table.addRow(row);
 
         row = new Row();
@@ -31,13 +31,11 @@ public class TestX {
         row.addCell("Name");
         table.addRow(row);
 
-        table.beign();
-
         // load sample data
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             table.addRow(new Object[] {i, i, i, i, i, i});
         }
-        table.end();
+        table.flush();
 
     }
 
